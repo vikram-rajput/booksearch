@@ -1,45 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import { SearchBooks } from '../actions/search-books-action';
+// import { Link } from 'react-router';
 class Search extends Component {
- 
   handleSubmit = e => {
     e.preventDefault();
-    this.getBookList(e.target.elements.searchQuery.value)
-    
-  };
-
-  getBookList = q => {axios.get(`https://cors-anywhere.herokuapp.com/https://www.goodreads.com/search/index.xml?key=RGaiyr2dszkRQSc6gKegnA&q=${q}`).then(res => {
-    this.parseXMLResponse(res.data);
-  });
-}
-  parseXMLResponse = response => {
-    const parser = new DOMParser();
-    const XMLResponse = parser.parseFromString(response, 'application/xml');
-    const parseError = XMLResponse.getElementsByTagName('parsererror');
-    if (parseError.length) {
-     alert('There was an error fetching results.');
-    } else {
-      const XMLresults = new Array(...XMLResponse.getElementsByTagName('work'));
-      const searchResults = XMLresults.map(result => this.XMLToJson(result));
-        console.log(searchResults);
-      this.props.search(searchResults);
-    }
-  };
-  XMLToJson = XML => {
-    const allNodes = new Array(...XML.children);
-    const jsonResult = {};
-    allNodes.forEach(node => {
-      if (node.children.length) {
-        jsonResult[node.nodeName] = this.XMLToJson(node);
-      } else {
-        jsonResult[node.nodeName] = node.innerHTML;
-      }
-    });
-    return jsonResult;
-  };
+    this.props.SearchBooks(e.target.elements.searchQuery.value);
+};
   render() {
-    console.log(this.props);
     return (
       <div className="search-result container">
         <div className="row justify-content-center">
@@ -67,18 +35,7 @@ class Search extends Component {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return { fake: 'fake' };
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    search: result => {
-      dispatch({ type: 'SEARCH_BOOKS', books: result });
-    }
-  };
-};
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  null,
+  {SearchBooks}
 )(Search);
