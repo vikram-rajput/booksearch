@@ -1,4 +1,11 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## If you have Yarn Do Following Commands
+### `yarn install`
+### `yarn start`
+
+## If you have NPM Do Following Commands
+### `npm install`
+### `npm start`
 
 ## Available Scripts
 
